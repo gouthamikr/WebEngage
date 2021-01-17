@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nunjucks</title>
+  </head>
+  <body>
+    1. For all the users whose "id" is greater than 4, print following, >>> if
+    "id" is even print "[id] : [username] is even" >>> else print "I'm Odd"
+    <hr />
+    <ul>
+      {% for item in data %}
+      <span>
+        {% if item.id>4 and item.id%2==0 %}
+        <li>{{item.id}} <b>:</b> {{item.username}} is even</li>
+        {% else %}
+        <li>I'm Odd</li>
+        {% endif %}
+      </span>
+      {% else %}
+      <li>data empty</li>
+      {% endfor %}
+    </ul>
+
+    <hr />
+
+    2. if "lng" attribute (I.e. address -> geo -> lng) is negative, print
+    following, >>> "[username] : [city] : [lng]"
+
+    <hr />
+    <div>
+      {% for item in data %}
+      <ul>
+        {% if item.address.geo.lng < 0 %}
+        <li>
+          {{item.username}} <b>:</b> {{item.address.city}}
+          <b>:</b> {{item.address.geo.lng}}
+        </li>
+        {% endif %}
+      </ul>
+      {% else %}
+      <li>data empty</li>
+      {% endfor %}
+    </div>
+    <hr />
+
+    3. if "email" ends with ".biz" print following, >>> "[name] : [email] :
+    [company]"
+    <hr />
+
+    {% for item in data %}
+    <ul>
+      {% set elem = item.email.split(".") %}
+      <div>
+        {% for i in elem %}
+        <div>
+          {% if i == "biz" %}
+          <li>
+            {{item.name}} <b> : </b> {{item.email}}
+            <b> : </b> {{item.company.name}}
+          </li>
+        </div>
+        {% endif %}
+      </div>
+      {% else %}
+      <li>collection empty</li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <li>data empty</li>
+    {% endfor %}
+
+    <hr />
+    4. if "city" contains any name from the following list -> ("Aliyaview",
+    "Howemouth", Gwenborough) print following, >>> if numeral value inside
+    "suite" is greater than 500 print "[username] : [email] : [suite]" example
+    -> suite: "Suite 729" will print "Maxime_Nienow Sherwood@rosamond.me Suite
+    729"
+    <hr />
+    {% set arr = ["Aliyaview", "Howemouth" , "Gwenborough"] %}
+    <div>
+      {% for item in data %}
+      <div>
+        {% for elem in arr %}
+        <div>
+          {% if item.address.city == elem %}
+          <div>
+            {% set suite = item.address.suite.split(" ") %} {% set value =
+            suite[1] | int %} {% if value > 500 %}
+            <li>
+              {{item.username}} <b> : </b> {{item.email}}
+              <b> : </b> {{item.address.suite}} {% endif %}
+            </li>
+          </div>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      {% endfor %}
+    </div>
+
+    <hr />
+    5. Print CatchPhrase(I.e. company -> catchPhrase) which will contain max 15
+    letters.
+    <hr />
+    {% for item in data %}
+    <div>
+      {% set len = item.company.catchPhrase.length %} {% if len > 15 %}
+      <li>{{item.company.catchPhrase}}</li>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </body>
+</html>
